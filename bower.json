@@ -1,6 +1,6 @@
 {
   "name": "kcfinder",
-  "version": "3.20.0",
+  "version": "3.20.2",
   "authors": [
     "Michal Zukowski <michalz@plocman.pl>"
   ],
@@ -8,7 +8,6 @@
   "license": "GNUGPLv3",
   "homepage": "http://kcfinder.sunhater.com",
   "ignore": [
-    "**/.*",
-    "upload"
+    "**/.*"
   ]
 }
