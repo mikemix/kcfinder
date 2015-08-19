@@ -4,7 +4,7 @@
   "authors": [
     "Michal Zukowski <michalz@plocman.pl>"
   ],
-  "description": "kcfinder port",
+  "description": "Unofficial kcfinder port at github.com/mikemix/kcfinder",
   "license": "GPLv3",
   "homepage": "http://kcfinder.sunhater.com"
 }
