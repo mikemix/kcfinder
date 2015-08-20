@@ -8,7 +8,7 @@ In your `config/applicationc.config.php` define two constants with the directory
 
 ```php
 // example
-// :login: will be replaced with the ZF2 identity
+// :login: will be replaced with the ZF2 identity string
 define('KCFINDER_UPLOAD_DIR', getcwd() . '/public/assets/upload/:login:');
 define('KCFINDER_UPLOAD_URL', '/assets/upload/:login:');
 ```
