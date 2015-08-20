@@ -35,6 +35,7 @@ class session {
         require 'vendor/autoload.php';
         $app = \Zend\Mvc\Application::init(require 'config/application.config.php');
         $login = $app->getServiceManager()->get('Zend\Authentication\AuthenticationService')->getStorage()->read();
+        $login = null === $login ? $login : (string)$login;
 
         chdir($cwd);
         $config  = require($configFile);
