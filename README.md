@@ -2,6 +2,17 @@
 http://kcfinder.sunhater.com  
 Pavel Tzonkov (sunhater@sunhater.com)
 
+## Integration with ZF2
+
+In your `config/applicationc.config.php` define two constants with the directory configuration:
+
+```php
+// example
+// :login: will get replaced with the ZF2 identity
+define('KCFINDER_UPLOAD_DIR', getcwd() . '/public/assets/upload/:login:');
+define('KCFINDER_UPLOAD_URL', '/assets/upload/:login:');
+```
+
 ## Overview
 KCFinder is free open-source replacement of CKFinder web file manager. It can be integrated into FCKeditor, CKEditor, and TinyMCE WYSIWYG web editors (or your custom web applications) to upload and manage images, flash movies, and other files that can be embedded into an editor's generated HTML content.
 
