@@ -1,16 +1,16 @@
 <?php
 
 /** This file is part of KCFinder project
-  *
-  *      @desc Session class
-  *   @package KCFinder
-  *   @version 3.12
-  *    @author Pavel Tzonkov <sunhater@sunhater.com>
-  * @copyright 2010-2014 KCFinder Project
-  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
-  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
-  *      @link http://kcfinder.sunhater.com
-  */
+ *
+ *      @desc Session class
+ *   @package KCFinder
+ *   @version 3.12
+ *    @author Pavel Tzonkov <sunhater@sunhater.com>
+ * @copyright 2010-2014 KCFinder Project
+ *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+ *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
+ *      @link http://kcfinder.sunhater.com
+ */
 
 namespace kcfinder;
 
@@ -20,42 +20,31 @@ class session {
     public $values;
     protected $config;
 
-    public function __construct($configFile) {
+    /**
+     * @param $configFile
+     */
+    public function __construct($configFile)
+    {
+        /*********************************************************
+         * Include ZF2
+         */
+        $cwd = getcwd();
+        $zf2Root = sprintf('%s/..', $_SERVER['DOCUMENT_ROOT']);
+        chdir($zf2Root);
 
-        // Start session if it is not already started
-        if (!session_id())
-            session_start();
+        require 'vendor/autoload.php';
+        $app = \Zend\Mvc\Application::init(require 'config/application.config.php');
+        $login = $app->getServiceManager()->get('Zend\Authentication\AuthenticationService')->getStorage()->read();
 
-        $config = require($configFile);
+        chdir($cwd);
+        $config  = require($configFile);
+        $config['disabled']  = null === $login;
 
-        // _sessionVar option is set
-        if (isset($config[self::SESSION_VAR])) {
-            $session = &$config[self::SESSION_VAR];
-
-            // _sessionVar option is string
-            if (is_string($session))
-                $session = &$_SESSION[$session];
-
-            if (!is_array($session))
-                $session = array();
-
-        // Use global _SESSION array if _sessionVar option is not set
-        } else
-            $session = &$_SESSION;
-
-        // Securing the session
-        $stamp = array(
-            'ip' => $_SERVER['REMOTE_ADDR'],
-            'agent' => md5($_SERVER['HTTP_USER_AGENT'])
-        );
-        if (!isset($session['stamp']))
-            $session['stamp'] = $stamp;
-        elseif (!is_array($session['stamp']) || ($session['stamp'] !== $stamp)) {
-            // Destroy session if user agent is different (e.g. after browser update)
-            if ($session['stamp']['ip'] === $stamp['ip'])
-                session_destroy();
-            die;
+        if (!$config['disabled']) {
+            $config['uploadDir'] = str_replace(':login:', $login, KCFINDER_UPLOAD_DIR);
+            $config['uploadURL'] = str_replace(':login:', $login, KCFINDER_UPLOAD_URL);
         }
+
 
         // Load session configuration
         foreach ($config as $key => $val)
@@ -72,5 +61,4 @@ class session {
     public function getConfig() {
         return $this->config;
     }
-
 }
